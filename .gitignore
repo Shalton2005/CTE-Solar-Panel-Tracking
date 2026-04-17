@@ -1,0 +1,25 @@
+# MATLAB
+*.asv
+*.autosave
+*.fig
+*.mex*
+*.mlappinstall
+*.mexa64
+*.mexmaci64
+*.mexw64
+
+# Simulink generated code and cache
+slprj/
+*_ert_rtw/
+*_grt_rtw/
+*_rtw/
+*.slxc
+
+# MATLAB project user data
+resources/project/**/.*
+*.prj
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
