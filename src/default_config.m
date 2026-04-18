@@ -9,9 +9,30 @@ cfg.location.utcOffset = 5.5;
 cfg.simulation.totalTimeSec = 24 * 3600;
 cfg.simulation.stepSec = 600;
 
-cfg.tracker.initialAzimuthDeg = 90;
-cfg.tracker.initialElevationDeg = 45;
-cfg.tracker.proportionalGain = 0.2;
+cfg.controller.type = 'pid';
+cfg.controller.initialAzimuthDeg = 90;
+cfg.controller.initialElevationDeg = 45;
+cfg.controller.angleMinDeg = 0;
+cfg.controller.angleMaxDeg = 180;
+cfg.controller.maxRateDegPerSec = 0.35;
+
+cfg.controller.kp.azimuth = 0.22;
+cfg.controller.ki.azimuth = 0.00035;
+cfg.controller.kd.azimuth = 0.08;
+
+cfg.controller.kp.elevation = 0.24;
+cfg.controller.ki.elevation = 0.00040;
+cfg.controller.kd.elevation = 0.08;
+
+cfg.controller.antiWindupEnabled = true;
+
+cfg.baseline.fixedPanelAzimuthDeg = 90;
+cfg.baseline.fixedPanelElevationDeg = 45;
+
+cfg.analysis.exportEnabled = true;
+cfg.analysis.outputDir = fullfile('outputs', 'latest');
+cfg.analysis.exportMatFile = 'simulation_results.mat';
+cfg.analysis.exportCsvFile = 'metrics_summary.csv';
 
 cfg.visualization.pauseSec = 0.05;
 cfg.visualization.figurePosition = [100 100 1000 650];

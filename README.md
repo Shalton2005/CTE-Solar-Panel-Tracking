@@ -7,9 +7,9 @@ This repository contains a simulation-first implementation of a dual-axis solar 
 Static solar panels lose potential energy capture as sun position changes across the day. A dual-axis tracker can improve incident angle alignment and increase total energy yield. This project demonstrates that concept through:
 
 - solar position modeling (azimuth and elevation)
-- panel angle actuation behavior
-- control-loop tracking mindset aligned with PID controller design
-- end-to-end simulation workflow for reproducible analysis
+- dual-axis PID panel control with anti-windup and actuator rate limiting
+- fixed-panel baseline comparison for measurable tracking value
+- end-to-end simulation workflow for reproducible analysis and exportable artifacts
 
 ## Repository Structure
 
@@ -17,9 +17,15 @@ Static solar panels lose potential energy capture as sun position changes across
 - `SunPosition.m`: solar azimuth/elevation computation function
 - `sun_pos.m`: backward-compatible launcher for simulation demo
 - `src/default_config.m`: central configuration parameters
-- `src/simulate_tracker.m`: numerical simulation engine
+- `src/simulate_tracker.m`: PID-based tracking simulation engine
+- `src/simulate_fixed_panel.m`: fixed-panel baseline simulation
+- `src/compute_tracking_metrics.m`: MAE, RMSE, peak error, and settling metrics
+- `src/run_tracking_analysis.m`: tracker and baseline orchestration
+- `src/export_simulation_artifacts.m`: MAT/CSV export for results
 - `src/animate_tracker.m`: visualization and animation loop
-- `scripts/run_simulation.m`: standard project entry point
+- `scripts/run_simulation.m`: standard project entry point (analysis + animation)
+- `scripts/run_analysis.m`: non-visual analysis and export entry point
+- `tests/`: MATLAB test suite for regression checks
 - `docs/ARCHITECTURE.md`: system architecture and data flow
 - `docs/WORKFLOW.md`: development and validation workflow
 - `docs/VALIDATION.md`: practical checks and acceptance criteria
@@ -31,13 +37,21 @@ Static solar panels lose potential energy capture as sun position changes across
 - MATLAB R2021a or later (recommended)
 - Simulink (for `.slx` model)
 
-### Run Script-Based Simulation
+### Run Simulation with Visualization
 
 From MATLAB, set the current folder to repository root and run:
 
 ```matlab
 run('scripts/run_simulation.m')
 ```
+
+### Run Analysis and Export Pipeline
+
+```matlab
+run('scripts/run_analysis.m')
+```
+
+Generated artifacts are written to `outputs/latest/`.
 
 ### Run Legacy Entry Point
 
@@ -59,17 +73,27 @@ Defaults are defined in `src/default_config.m`.
 - Time step: 600 seconds
 - Duration: 24 hours
 - Initial panel angles: 90 deg azimuth, 45 deg elevation
-- Proportional tracking gain: 0.2
+- PID gain sets for azimuth and elevation axes
+- Actuator angle and rate limits
+- Fixed-panel baseline settings
 
 ## Engineering Notes
 
-- The script-level simulation uses a bounded proportional response to emulate motor movement and to keep panel commands in valid angle ranges.
-- The architecture is intentionally modular so PID replacement/tuning can be introduced without changing plotting and orchestration code.
+- The script-level simulation uses a bounded PID response with optional anti-windup and actuator rate limiting.
+- The analysis pipeline compares tracker results against a fixed-panel baseline and estimates a relative alignment gain percentage.
 - Sun-position equations use declination, equation of time, and local solar time conversion.
+
+## Testing
+
+Run MATLAB tests:
+
+```matlab
+run('tests/run_tests.m')
+```
 
 ## CI and Quality
 
-A CI workflow is included under `.github/workflows/matlab-ci.yml` for automated checks in GitHub Actions with MATLAB support.
+A CI workflow is included under `.github/workflows/matlab-ci.yml` for automated analysis and test checks in GitHub Actions with MATLAB support.
 
 ## Contributing
 
