@@ -1,0 +1,32 @@
+name: Release Gate
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  qa-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
+
+      - name: Run QA preflight
+        uses: matlab-actions/run-command@v2
+        with:
+          command: run('scripts/qa_preflight.m');
+
+      - name: Run scenarios
+        uses: matlab-actions/run-command@v2
+        with:
+          command: run('scripts/run_scenarios.m');
+
+      - name: Run tests
+        uses: matlab-actions/run-command@v2
+        with:
+          command: run('tests/run_tests.m');

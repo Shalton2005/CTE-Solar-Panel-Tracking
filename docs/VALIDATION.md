@@ -25,7 +25,15 @@ This document defines minimum acceptance checks for simulation and control behav
 - Tracker MAE and RMSE should be lower than fixed-panel baseline in typical daylight scenarios.
 - Relative alignment gain should be positive for default configuration.
 
-6. Numerical stability
+6. Scenario robustness
+- Scenario batch run should complete for all defined scenarios.
+- No scenario should produce NaN/Inf in metric tables.
+
+7. Simulink integration checks
+- Sync script should populate expected base workspace variables.
+- Model stop time and fixed-step settings should match config.
+
+8. Numerical stability
 - No NaN or Inf values in stored arrays.
 
 ## Regression Signals
@@ -35,6 +43,7 @@ A change should be reviewed if:
 - panel path visibly diverges from sun path
 - actuator values saturate for prolonged periods unexpectedly
 - tracker metrics regress relative to fixed-panel baseline
+- scenario summary shows missing or duplicate scenario identifiers
 - simulation runtime increases significantly without explanation
 
 ## Suggested Metrics
@@ -46,3 +55,4 @@ A change should be reviewed if:
 - Peak tracking error (deg)
 - Settling time for initial transient
 - Relative alignment gain (%)
+- Scenario pass/fail rate

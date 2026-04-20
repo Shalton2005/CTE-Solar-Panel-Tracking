@@ -15,6 +15,10 @@ slprj/
 *_rtw/
 *.slxc
 
+# Generated analysis artifacts
+outputs/latest/*
+!outputs/.gitkeep
+
 # MATLAB project user data
 resources/project/**/.*
 *.prj

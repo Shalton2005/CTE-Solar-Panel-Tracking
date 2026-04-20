@@ -34,3 +34,8 @@ jobs:
         uses: matlab-actions/run-command@v2
         with:
           command: run('tests/run_tests.m');
+
+      - name: Run QA preflight
+        uses: matlab-actions/run-command@v2
+        with:
+          command: run('scripts/qa_preflight.m');

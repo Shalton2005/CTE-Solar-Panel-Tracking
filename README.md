@@ -1,5 +1,9 @@
 # Dual-Axis Solar Tracker with PID Control (MATLAB/Simulink)
 
+![MATLAB CI](https://github.com/Shalton2005/CTE-Solar-Panel-Tracking/actions/workflows/matlab-ci.yml/badge.svg)
+![Release Gate](https://github.com/Shalton2005/CTE-Solar-Panel-Tracking/actions/workflows/release-gate.yml/badge.svg)
+![License](https://img.shields.io/github/license/Shalton2005/CTE-Solar-Panel-Tracking)
+
 This repository contains a simulation-first implementation of a dual-axis solar panel tracking concept using motor actuation and control-loop logic. It combines MATLAB scripts for solar-position and tracking visualization with a Simulink model for control-oriented analysis.
 
 ## Why This Project
@@ -22,13 +26,23 @@ Static solar panels lose potential energy capture as sun position changes across
 - `src/compute_tracking_metrics.m`: MAE, RMSE, peak error, and settling metrics
 - `src/run_tracking_analysis.m`: tracker and baseline orchestration
 - `src/export_simulation_artifacts.m`: MAT/CSV export for results
+- `src/build_scenario_configs.m`: scenario definitions
+- `src/run_scenario_batch.m`: multi-scenario analysis execution
+- `src/sync_config_to_simulink.m`: Simulink parameter synchronization
 - `src/animate_tracker.m`: visualization and animation loop
 - `scripts/run_simulation.m`: standard project entry point (analysis + animation)
 - `scripts/run_analysis.m`: non-visual analysis and export entry point
+- `scripts/run_scenarios.m`: scenario sweep execution
+- `scripts/sync_simulink_params.m`: pushes config values into Simulink workspace
+- `scripts/qa_preflight.m`: release-oriented preflight checks
 - `tests/`: MATLAB test suite for regression checks
 - `docs/ARCHITECTURE.md`: system architecture and data flow
 - `docs/WORKFLOW.md`: development and validation workflow
 - `docs/VALIDATION.md`: practical checks and acceptance criteria
+- `docs/SCENARIOS.md`: scenario catalog and usage
+- `docs/SIMULINK_INTEGRATION.md`: Simulink mapping and sync notes
+- `docs/RELEASE_CHECKLIST.md`: release readiness list
+- `docs/CHANGELOG.md`: tracked project changes
 
 ## Quick Start
 
@@ -52,6 +66,24 @@ run('scripts/run_analysis.m')
 ```
 
 Generated artifacts are written to `outputs/latest/`.
+
+### Run Scenario Sweeps
+
+```matlab
+run('scripts/run_scenarios.m')
+```
+
+### Sync Parameters to Simulink Workspace
+
+```matlab
+run('scripts/sync_simulink_params.m')
+```
+
+### Run Preflight QA Checks
+
+```matlab
+run('scripts/qa_preflight.m')
+```
 
 ### Run Legacy Entry Point
 
@@ -93,7 +125,10 @@ run('tests/run_tests.m')
 
 ## CI and Quality
 
-A CI workflow is included under `.github/workflows/matlab-ci.yml` for automated analysis and test checks in GitHub Actions with MATLAB support.
+Quality automation includes:
+
+- `.github/workflows/matlab-ci.yml` for analysis and test checks on pushes/PRs
+- `.github/workflows/release-gate.yml` for pre-release quality gates
 
 ## Contributing
 
