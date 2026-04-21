@@ -26,14 +26,6 @@ cfg.controller.kd.elevation = 0.08;
 
 cfg.controller.antiWindupEnabled = true;
 
-cfg.baseline.fixedPanelAzimuthDeg = 90;
-cfg.baseline.fixedPanelElevationDeg = 45;
-
-cfg.analysis.exportEnabled = true;
-cfg.analysis.outputDir = fullfile('outputs', 'latest');
-cfg.analysis.exportMatFile = 'simulation_results.mat';
-cfg.analysis.exportCsvFile = 'metrics_summary.csv';
-
 cfg.visualization.pauseSec = 0.05;
 cfg.visualization.figurePosition = [100 100 1000 650];
 end

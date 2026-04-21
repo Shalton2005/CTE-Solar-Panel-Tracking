@@ -1,47 +1,35 @@
 # Workflow
 
-## Development Workflow
+## Run Sequence
 
-1. Create a feature branch.
-2. Keep control, simulation, metrics, and docs changes in separate commits when possible.
-3. Run non-visual analysis locally.
-4. Run MATLAB tests.
-5. Run scenario sweep for comparative behavior.
-6. Verify exported metrics and artifacts.
-7. If visualization changed, run full simulation animation.
-8. Run preflight QA script before release-oriented tags.
-9. Open pull request with summary, assumptions, and screenshots.
+1. Open the project root folder in MATLAB.
+2. Run:
 
-## Recommended Branch Naming
+```matlab
+run('scripts/run_simulation.m')
+```
 
-- `feature/<short-topic>`
-- `fix/<short-topic>`
-- `docs/<short-topic>`
+3. Observe sky-path and panel tracking response in the animation.
 
-## Local Validation Checklist
+## PID Tuning Sequence
 
-- `scripts/run_analysis.m` runs without runtime errors.
-- `scripts/run_scenarios.m` runs without runtime errors.
-- `scripts/qa_preflight.m` passes.
-- `tests/run_tests.m` passes.
-- Sun path and panel path are physically sensible.
-- Panel angles remain within limits.
-- Tracker error metrics are better than fixed-panel baseline for normal daylight profile.
-- Artifact files are generated in `outputs/latest` when export is enabled.
-- Simulink model opens and compiles.
-- Simulink sync script updates expected base workspace variables.
+1. Edit gains in `src/default_config.m`.
+2. Re-run `scripts/run_simulation.m`.
+3. Compare overshoot, settling behavior, and tracking smoothness.
 
-## Pull Request Checklist
+## Simulink Sequence
 
-- Small, focused change set
-- Updated docs for behavior changes
-- Validation evidence included
-- No unrelated file formatting changes
+1. Open model:
 
-## Release Workflow
+```matlab
+open_system('solar_tracking_with_PIDcontrol.slx')
+```
 
-1. Run local checks in the validation checklist.
-2. Push changes and ensure `MATLAB CI` workflow passes.
-3. Trigger `Release Gate` workflow or push a `v*` tag.
-4. Confirm release checklist completion in `docs/RELEASE_CHECKLIST.md`.
-5. Publish release notes from `docs/CHANGELOG.md` summary.
+2. Keep solver and controller settings aligned with `src/default_config.m` for consistent behavior.
+
+## Basic Validation Checklist
+
+- simulation starts without runtime errors
+- panel motion remains within configured angle limits
+- panel tracks sun movement directionally across the day
+- no unstable oscillation with default gains

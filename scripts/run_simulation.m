@@ -6,19 +6,5 @@ projectRoot = fileparts(thisDir);
 addpath(fullfile(projectRoot, 'src'));
 
 cfg = default_config();
-analysis = run_tracking_analysis(cfg);
-
-disp('Tracking metrics summary:');
-disp(analysis.trackerMetrics.table);
-
-disp('Fixed panel metrics summary:');
-disp(analysis.fixedMetrics.table);
-
-disp('Estimated relative gain (%):');
-disp(analysis.relativeGainPercent);
-
-if cfg.analysis.exportEnabled
-	export_simulation_artifacts(analysis, cfg, projectRoot);
-end
-
-animate_tracker(analysis.trackerResults, cfg);
+results = simulate_tracker(cfg);
+animate_tracker(results, cfg);

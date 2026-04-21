@@ -1,91 +1,39 @@
 # Dual-Axis Solar Tracker with PID Control (MATLAB/Simulink)
 
-![MATLAB CI](https://github.com/Shalton2005/CTE-Solar-Panel-Tracking/actions/workflows/matlab-ci.yml/badge.svg)
-![Release Gate](https://github.com/Shalton2005/CTE-Solar-Panel-Tracking/actions/workflows/release-gate.yml/badge.svg)
-![License](https://img.shields.io/github/license/Shalton2005/CTE-Solar-Panel-Tracking)
+This project demonstrates a production-style solar panel tracking concept using dual-axis motor motion with PID control. It combines a Simulink model with MATLAB scripts to compute sun position, simulate panel motion, and visualize tracking behavior through the day.
 
-This repository contains a simulation-first implementation of a dual-axis solar panel tracking concept using motor actuation and control-loop logic. It combines MATLAB scripts for solar-position and tracking visualization with a Simulink model for control-oriented analysis.
+## Core Idea
 
-## Why This Project
+- Model sun azimuth and elevation for a selected location
+- Drive panel azimuth and elevation toward the sun using PID loops
+- Respect practical actuator constraints (angle bounds and rate limits)
+- Visualize tracking response to support design understanding
 
-Static solar panels lose potential energy capture as sun position changes across the day. A dual-axis tracker can improve incident angle alignment and increase total energy yield. This project demonstrates that concept through:
+## Project Structure
 
-- solar position modeling (azimuth and elevation)
-- dual-axis PID panel control with anti-windup and actuator rate limiting
-- fixed-panel baseline comparison for measurable tracking value
-- end-to-end simulation workflow for reproducible analysis and exportable artifacts
-
-## Repository Structure
-
-- `solar_tracking_with_PIDcontrol.slx`: Simulink model for solar tracking control study
-- `SunPosition.m`: solar azimuth/elevation computation function
-- `sun_pos.m`: backward-compatible launcher for simulation demo
-- `src/default_config.m`: central configuration parameters
-- `src/simulate_tracker.m`: PID-based tracking simulation engine
-- `src/simulate_fixed_panel.m`: fixed-panel baseline simulation
-- `src/compute_tracking_metrics.m`: MAE, RMSE, peak error, and settling metrics
-- `src/run_tracking_analysis.m`: tracker and baseline orchestration
-- `src/export_simulation_artifacts.m`: MAT/CSV export for results
-- `src/build_scenario_configs.m`: scenario definitions
-- `src/run_scenario_batch.m`: multi-scenario analysis execution
-- `src/sync_config_to_simulink.m`: Simulink parameter synchronization
-- `src/animate_tracker.m`: visualization and animation loop
-- `scripts/run_simulation.m`: standard project entry point (analysis + animation)
-- `scripts/run_analysis.m`: non-visual analysis and export entry point
-- `scripts/run_scenarios.m`: scenario sweep execution
-- `scripts/sync_simulink_params.m`: pushes config values into Simulink workspace
-- `scripts/qa_preflight.m`: release-oriented preflight checks
-- `tests/`: MATLAB test suite for regression checks
-- `docs/ARCHITECTURE.md`: system architecture and data flow
-- `docs/WORKFLOW.md`: development and validation workflow
-- `docs/VALIDATION.md`: practical checks and acceptance criteria
-- `docs/SCENARIOS.md`: scenario catalog and usage
-- `docs/SIMULINK_INTEGRATION.md`: Simulink mapping and sync notes
-- `docs/RELEASE_CHECKLIST.md`: release readiness list
-- `docs/CHANGELOG.md`: tracked project changes
+- `solar_tracking_with_PIDcontrol.slx`: Simulink model
+- `SunPosition.m`: solar position function
+- `sun_pos.m`: legacy-compatible simulation launcher
+- `scripts/run_simulation.m`: main simulation entry point
+- `src/default_config.m`: tunable simulation and PID configuration
+- `src/simulate_tracker.m`: core PID tracking simulation
+- `src/animate_tracker.m`: visualization
+- `docs/WORKFLOW.md`: concise run and tuning workflow
 
 ## Quick Start
 
 ### Prerequisites
 
-- MATLAB R2021a or later (recommended)
-- Simulink (for `.slx` model)
+- MATLAB R2021a or newer
+- Simulink
 
-### Run Simulation with Visualization
-
-From MATLAB, set the current folder to repository root and run:
+### Run Main Simulation
 
 ```matlab
 run('scripts/run_simulation.m')
 ```
 
-### Run Analysis and Export Pipeline
-
-```matlab
-run('scripts/run_analysis.m')
-```
-
-Generated artifacts are written to `outputs/latest/`.
-
-### Run Scenario Sweeps
-
-```matlab
-run('scripts/run_scenarios.m')
-```
-
-### Sync Parameters to Simulink Workspace
-
-```matlab
-run('scripts/sync_simulink_params.m')
-```
-
-### Run Preflight QA Checks
-
-```matlab
-run('scripts/qa_preflight.m')
-```
-
-### Run Legacy Entry Point
+### Run Legacy Entry Script
 
 ```matlab
 run('sun_pos.m')
@@ -97,43 +45,15 @@ run('sun_pos.m')
 open_system('solar_tracking_with_PIDcontrol.slx')
 ```
 
-## Default Configuration
+## Configuration
 
-Defaults are defined in `src/default_config.m`.
+Edit parameters in `src/default_config.m`:
 
-- Location: Mangalore, India
-- Time step: 600 seconds
-- Duration: 24 hours
-- Initial panel angles: 90 deg azimuth, 45 deg elevation
-- PID gain sets for azimuth and elevation axes
-- Actuator angle and rate limits
-- Fixed-panel baseline settings
-
-## Engineering Notes
-
-- The script-level simulation uses a bounded PID response with optional anti-windup and actuator rate limiting.
-- The analysis pipeline compares tracker results against a fixed-panel baseline and estimates a relative alignment gain percentage.
-- Sun-position equations use declination, equation of time, and local solar time conversion.
-
-## Testing
-
-Run MATLAB tests:
-
-```matlab
-run('tests/run_tests.m')
-```
-
-## CI and Quality
-
-Quality automation includes:
-
-- `.github/workflows/matlab-ci.yml` for analysis and test checks on pushes/PRs
-- `.github/workflows/release-gate.yml` for pre-release quality gates
-
-## Contributing
-
-Please read `CONTRIBUTING.md` before creating pull requests.
+- location (`latitude`, `longitude`, `utcOffset`)
+- simulation timing (`totalTimeSec`, `stepSec`)
+- PID gains for both axes (`kp`, `ki`, `kd`)
+- panel limits (`angleMinDeg`, `angleMaxDeg`, `maxRateDegPerSec`)
 
 ## License
 
-This project is released under the MIT License. See `LICENSE`.
+Released under the MIT License. See `LICENSE`.
